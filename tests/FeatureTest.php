@@ -19,11 +19,13 @@ final class FeatureTest extends \PHPUnit_Framework_TestCase
      */
     private $fixtures;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
         require_once(__DIR__ . '/../index.php');
     }
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->fixtures = [
             'order-common' => (object) [
                 'items' => [
@@ -71,36 +73,44 @@ final class FeatureTest extends \PHPUnit_Framework_TestCase
         $this->fixtures['combined'] = $combined;
     }
 
-    public function test_it_should_keep_the_base_price_untouch_for_common_items() {
+    public function test_it_should_keep_the_base_price_untouch_for_common_items()
+    {
         $this->assertSame('25.00', calculateOrder($this->fixtures['order-common']));
     }
 
-    public function test_it_should_boost_the_base_price_by_one_and_half_for_uncommon_items() {
+    public function test_it_should_boost_the_base_price_by_one_and_half_for_uncommon_items()
+    {
         $this->assertSame('123.00', calculateOrder($this->fixtures['order-uncommon']));
     }
 
-    public function test_it_should_boost_the_base_price_by_two_for_rare_items() {
+    public function test_it_should_boost_the_base_price_by_two_for_rare_items()
+    {
         $this->assertSame('120.00', calculateOrder($this->fixtures['order-rare']));
     }
 
-    public function test_it_should_calculate_the_sum_of_all_orders_combined() {
+    public function test_it_should_calculate_the_sum_of_all_orders_combined()
+    {
         $this->assertCount(6, $this->fixtures['combined']->items);
         $this->assertSame('268.00', calculateOrder($this->fixtures['combined']));
     }
 
-    public function test_it_should_give_a_10_percent_rebate_for_bronze_customer() {
+    public function test_it_should_give_a_10_percent_rebate_for_bronze_customer()
+    {
         $this->assertSame('241.20', calculateOrder($this->fixtures['combined'], ['account_level' => AccountType::BRONZE]));
     }
 
-    public function test_it_should_give_a_20_percent_rebate_for_silver_customer() {
+    public function test_it_should_give_a_20_percent_rebate_for_silver_customer()
+    {
         $this->assertSame('214.40', calculateOrder($this->fixtures['combined'], ['account_level' => AccountType::SILVER]));
     }
 
-    public function test_it_should_give_a_30_percent_rebate_for_gold_customer() {
+    public function test_it_should_give_a_30_percent_rebate_for_gold_customer()
+    {
         $this->assertSame('86.10', calculateOrder($this->fixtures['order-uncommon'], ['account_level' => AccountType::GOLD]));
     }
 
-    public function test_it_should_give_a_two_for_one_when_purchasing_two_rare_item_for_gold_customer() {
+    public function test_it_should_give_a_two_for_one_when_purchasing_two_rare_item_for_gold_customer()
+    {
         $this->assertSame('63.00', calculateOrder($this->fixtures['order-rare'], ['account_level' => AccountType::GOLD]));
     }
 }
