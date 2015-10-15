@@ -1,0 +1,20 @@
+{
+    "name": "star/training",
+    "description": "Training exercises",
+    "autoload-dev": {
+        "psr-4": {
+            "Star\\Training\\": ["src", "tests"]
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yannick Voyer",
+            "email": "yan.voyer@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}

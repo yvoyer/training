@@ -1,0 +1,6 @@
+/vendor
+/*ide*
+/phpunit.xml
+/bin/phpunit
+/bin/behat
+/composer.lock
