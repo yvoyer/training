@@ -14,10 +14,21 @@ namespace Star\Training;
  */
 final class Cart
 {
+    /**
+     * @var Order
+     */
     private $order;
+
+    /**
+     * @var Customer
+     */
     private $customer;
 
-    public function __construct($order, Customer $customer)
+    /**
+     * @param Order $order
+     * @param Customer $customer
+     */
+    public function __construct(Order $order, Customer $customer)
     {
         $this->order = $order;
         $this->customer = $customer;
@@ -35,23 +46,25 @@ final class Cart
         $highestPrice[2] = 0;
         $highestPrice[3] = 0;
 
-        foreach ($this->order->items as $item) {
-            $price = $item['price'];
-            if ($price > $highestPrice[$item['type']]) {
-                $highestPrice[$item['type']] = $price;
+        foreach ($this->order->getItems() as $item) {
+            $price = $item->getPrice();
+            $type = $item->getType();
+
+            if ($price > $highestPrice[$type]) {
+                $highestPrice[$type] = $price;
             }
 
-            $itemQuantity[$item['type']] ++;
+            $itemQuantity[$type] ++;
 
             if (1 === $accountType) {
                 $price *= .90;
             }
 
-            if (2 === $item['type']) {
+            if (2 === $type) {
                 $price *= 1.5;
             }
 
-            if (3 === $item['type']) {
+            if (3 === $type) {
                 $price *= 2;
             }
 
@@ -61,9 +74,9 @@ final class Cart
 
             if (3 === $accountType) {
                 // 2 for one
-                if (2 === $itemQuantity[$item['type']] && 3 === $item['type']) {
-                    $itemQuantity[$item['type']] = 0;
-                    $price = $highestPrice[$item['type']] - $price;
+                if (2 === $itemQuantity[$type] && 3 === $type) {
+                    $itemQuantity[$type] = 0;
+                    $price = $highestPrice[$type] - $price;
                 }
             }
 
