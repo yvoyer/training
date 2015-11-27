@@ -37,14 +37,13 @@ final class Cart
     public function calculateOrder()
     {
         $sum = 0;
-        $accountType = $this->customer->getType();
 
-        $itemQuantity[1] = 0;
-        $itemQuantity[2] = 0;
-        $itemQuantity[3] = 0;
-        $highestPrice[1] = 0;
-        $highestPrice[2] = 0;
-        $highestPrice[3] = 0;
+        $itemQuantity[ProductType::COMMON] = 0;
+        $itemQuantity[ProductType::UNCOMMON] = 0;
+        $itemQuantity[ProductType::RARE] = 0;
+        $highestPrice[ProductType::COMMON] = 0;
+        $highestPrice[ProductType::UNCOMMON] = 0;
+        $highestPrice[ProductType::RARE] = 0;
 
         foreach ($this->order->getItems() as $item) {
             $price = $item->getPrice();
@@ -56,25 +55,25 @@ final class Cart
 
             $itemQuantity[$type] ++;
 
-            if (1 === $accountType) {
+            if ($this->customer->isBronze()) {
                 $price *= .90;
             }
 
-            if (2 === $type) {
+            if ($item->isUncommon()) {
                 $price *= 1.5;
             }
 
-            if (3 === $type) {
+            if ($item->isRare()) {
                 $price *= 2;
             }
 
-            if (2 === $accountType) {
+            if ($this->customer->isSilver()) {
                 $price *= .80;
             }
 
-            if (3 === $accountType) {
+            if ($this->customer->isGold()) {
                 // 2 for one
-                if (2 === $itemQuantity[$type] && 3 === $type) {
+                if (2 === $itemQuantity[$type] && $item->isRare()) {
                     $itemQuantity[$type] = 0;
                     $price = $highestPrice[$type] - $price;
                 }
@@ -83,7 +82,7 @@ final class Cart
             $sum += $price;
         }
 
-        if (3 === $accountType) {
+        if ($this->customer->isGold()) {
             $sum *= .70;
         }
 

@@ -28,45 +28,35 @@ final class Customer
     }
 
     /**
-     * @return int
-     *
-     * @deprecated todo Remove at some point
+     * @return bool
      */
-    public function getType()
+    public function isBronze()
     {
-        return $this->type;
+        return $this->type === AccountType::BRONZE;
     }
 
     /**
-     * @return Customer
+     * @return bool
      */
-    public static function Bronze()
+    public function isSilver()
     {
-        return new self(AccountType::BRONZE);
+        return $this->type === AccountType::SILVER;
     }
 
     /**
-     * @return Customer
+     * @return bool
      */
-    public static function Silver()
+    public function isGold()
     {
-        return new self(AccountType::SILVER);
+        return $this->type === AccountType::GOLD;
     }
 
     /**
-     * @return Customer
+     * @return bool
      */
-    public static function Gold()
+    public function isBasic()
     {
-        return new self(AccountType::GOLD);
-    }
-
-    /**
-     * @return Customer
-     */
-    public static function Basic()
-    {
-        return new self('Normal');
+        return $this->type === 'Normal';
     }
 
     /**
@@ -78,17 +68,6 @@ final class Customer
     {
         $accountType = (isset($info['account_level'])) ? $info['account_level'] : 'Normal';
 
-        switch ($accountType) {
-            case AccountType::GOLD:
-                return self::Gold();
-
-            case AccountType::SILVER:
-                return self::Silver();
-
-            case AccountType::BRONZE:
-                return self::Bronze();
-        }
-
-        return self::Basic();
+        return new self($accountType);
     }
 }
