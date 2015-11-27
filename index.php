@@ -9,7 +9,10 @@
  */
 function calculateOrder($order, $customer = null)
 {
-    $cart = new \Star\Training\Cart($order, $customer);
+    $cart = new \Star\Training\Cart(
+        $order,
+        \Star\Training\Customer::fromLegacy($customer)
+    );
 
     return $cart->calculateOrder();
 }

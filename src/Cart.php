@@ -17,7 +17,7 @@ final class Cart
     private $order;
     private $customer;
 
-    public function __construct($order, $customer = null)
+    public function __construct($order, Customer $customer)
     {
         $this->order = $order;
         $this->customer = $customer;
@@ -26,7 +26,7 @@ final class Cart
     public function calculateOrder()
     {
         $sum = 0;
-        $accountType = (isset($this->customer['account_level'])) ? $this->customer['account_level'] : 'Normal';
+        $accountType = $this->customer->getType();
 
         $itemQuantity[1] = 0;
         $itemQuantity[2] = 0;
