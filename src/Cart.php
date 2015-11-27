@@ -7,6 +7,8 @@
 
 namespace Star\Training;
 
+use Star\Training\Discount\BronzeCustomerGetPercentOnItem;
+
 /**
  * Class Cart
  *
@@ -36,56 +38,54 @@ final class Cart
 
     public function calculateOrder()
     {
-        $sum = 0;
+        $sum = new Price(0);
 
         $itemQuantity[ProductType::COMMON] = 0;
         $itemQuantity[ProductType::UNCOMMON] = 0;
         $itemQuantity[ProductType::RARE] = 0;
-        $highestPrice[ProductType::COMMON] = 0;
-        $highestPrice[ProductType::UNCOMMON] = 0;
-        $highestPrice[ProductType::RARE] = 0;
+        $highestPrice[ProductType::COMMON] = new Price(0);
+        $highestPrice[ProductType::UNCOMMON] = new Price(0);
+        $highestPrice[ProductType::RARE] = new Price(0);
 
         foreach ($this->order->getItems() as $item) {
             $price = $item->getPrice();
             $type = $item->getType();
 
-            if ($price > $highestPrice[$type]) {
+            if ($price->greaterThan($highestPrice[$type])) {
                 $highestPrice[$type] = $price;
             }
 
             $itemQuantity[$type] ++;
 
-            if ($this->customer->isBronze()) {
-                $price *= .90;
-            }
+            $price = $price->applyDiscount(new BronzeCustomerGetPercentOnItem($this->customer, .9));
 
             if ($item->isUncommon()) {
-                $price *= 1.5;
+                $price = $price->multiply(1.5);
             }
 
             if ($item->isRare()) {
-                $price *= 2;
+                $price = $price->multiply(2);
             }
 
             if ($this->customer->isSilver()) {
-                $price *= .80;
+                $price = $price->multiply(.8);
             }
 
             if ($this->customer->isGold()) {
                 // 2 for one
                 if (2 === $itemQuantity[$type] && $item->isRare()) {
                     $itemQuantity[$type] = 0;
-                    $price = $highestPrice[$type] - $price;
+                    $price = $price->subtract($highestPrice[$type]);
                 }
             }
 
-            $sum += $price;
+            $sum = $sum->addPrice($price);
         }
 
         if ($this->customer->isGold()) {
-            $sum *= .70;
+            $sum = $sum->multiply(.7);
         }
 
-        return number_format($sum, 2);
+        return (string) $sum;
     }
 }

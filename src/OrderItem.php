@@ -7,6 +7,8 @@
 
 namespace Star\Training;
 
+use Star\Training\Discount\ItemDiscount;
+
 /**
  * Class OrderItem
  *
@@ -35,11 +37,11 @@ final class OrderItem
     }
 
     /**
-     * @return float
+     * @return Price
      */
     public function getPrice()
     {
-        return $this->price;
+        return new Price($this->price);
     }
 
     /**
