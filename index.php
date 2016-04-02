@@ -47,6 +47,9 @@ function calculateOrder($order, $customer = null) {
             if (2 === $itemQuantity[$item['type']] && 3 === $item['type']) {
                 $itemQuantity[$item['type']] = 0;
                 $price = $highestPrice[$item['type']] - $price;
+                if ($price < 0) {
+                    $price = 0;
+                }
             }
         }
 

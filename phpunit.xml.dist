@@ -12,6 +12,7 @@
         processIsolation            = "false"
         stopOnFailure               = "false"
         syntaxCheck                 = "false"
+        verbose                     = "true"
         bootstrap                   = "vendor/autoload.php" >
 
     <testsuites>
@@ -26,8 +27,7 @@
         </whitelist>
     </filter>
 
-    <!-- Enable the coverage -->
-    <!-- <logging>
-         <log type="coverage-html" target="/tmp/coverage/training" charset="UTF-8"/>
-    </logging> -->
+    <php>
+        <env name="track-bug" value="0"/>
+    </php>
 </phpunit>
