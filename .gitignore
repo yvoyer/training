@@ -3,4 +3,4 @@
 /phpunit.xml
 /bin/phpunit
 /bin/behat
-/composer.lock
+/bin/*
