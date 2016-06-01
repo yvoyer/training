@@ -13,3 +13,20 @@ Requirements
 * Silver customer should have 20% rebate on order
 * Gold customer should have 30% rebate on order
 * Gold customer should have 2 for one (Rare items only). They should pay for the highest items.
+
+Install
+-------
+
+You need to have (`composer`)[https://getcomposer.org/] installed on your machine.
+
+To install all technical requirements, run in command line:
+
+````bash
+composer install
+````
+
+Then you can run unit test by running this command:
+
+````bash
+vendor/bin/phpunit
+````
