@@ -26,6 +26,29 @@ class GoldAccount implements  AccountType {
 	}
 };
 
+class Customer {
+	private $_account_type;
+
+	public function __construct(AccountType $account_type) {
+		$this->_account_type = $account_type;	
+	}
+	
+	public static function fromArray($customer) {
+		$accountType = (isset($customer['account_level'])) ? $customer['account_level'] : 'Normal';
+		
+		switch ($accountType) {
+			case 1:
+				return new self(new BronzeAccount());
+			case 2:
+				return new self(new SilverAccount());
+			case 3:
+				return new self(new GoldAccount());
+			default;
+				return new NormalAccount();
+		}
+	}
+}
+
 /**
  * @param object $order
  * @param array $customer
