@@ -39,16 +39,16 @@ class OrderCalculator {
 				$price *= self::ACCOUNT_PRICE_REBATE_BRONZE;
 			}
 
+			if (self::ACCOUNT_TYPE_SILVER === $accountType) {
+				$price *= self::ACCOUNT_PRICE_REBATE_SILVER;
+			}
+
 			if (self::ITEM_RARITY_UNCOMMON === $item['type']) {
 				$price *= self::ITEM_PRICE_BOOST_UNCOMMON;
 			}
 
 			if (self::ITEM_RARITY_RARE === $item['type']) {
 				$price *= self::ITEM_PRICE_BOOST_RARE;
-			}
-
-			if (self::ACCOUNT_TYPE_SILVER === $accountType) {
-				$price *= self::ACCOUNT_PRICE_REBATE_SILVER;
 			}
 
 			if (self::ACCOUNT_TYPE_GOLD === $accountType) {
