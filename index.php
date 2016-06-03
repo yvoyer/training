@@ -1,6 +1,31 @@
 <?php
 // ... other code
 
+interface AccountType {
+	public function discount($price);
+}
+
+class NormalAccount implements AccountType {
+	public function discount($price) {
+		// TODO: Implement discount() method.
+	}
+};
+class BronzeAccount implements AccountType {
+	public function discount($price) {
+		// TODO: Implement discount() method.
+	}
+}
+class SilverAccount implements AccountType {
+	public function discount($price) {
+		// TODO: Implement discount() method.
+	}
+};
+class GoldAccount implements  AccountType {
+	public function discount($price) {
+		// TODO: Implement discount() method.
+	}
+};
+
 /**
  * @param object $order
  * @param array $customer
