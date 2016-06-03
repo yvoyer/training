@@ -22,6 +22,17 @@ class TypeOfAccount {
 		return $this->type;
 	}
 
+	public function applyDiscount($price) {
+		if (1 === $this->type) {
+			$price *= .90;
+		}
+		if (2 === $this->type) {
+			$price *= .80;
+		}
+
+		return $price;
+	}
+
 	public static function fromCustomer($customer = null) {
 		return new self((isset($customer['account_level'])) ? $customer['account_level'] : 'Normal');
 	}

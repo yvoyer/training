@@ -31,10 +31,6 @@ class Calculator {
 
 			$itemQuantity[$type]++;
 
-			if (1 === $accountType->getType()) {
-				$price *= .90;
-			}
-
 			if (self::ITEM_TYPE_2 === $type) {
 				$price *= 1.5;
 			}
@@ -43,9 +39,7 @@ class Calculator {
 				$price *= 2;
 			}
 
-			if (2 === $accountType->getType()) {
-				$price *= .80;
-			}
+			$price = $accountType->applyDiscount($price);
 
 			if (3 === $accountType->getType()) {
 				// 2 for one
