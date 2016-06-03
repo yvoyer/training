@@ -23,7 +23,7 @@ class Order {
 	 * @param Item[] $items
 	 * @param Customer $customer
 	 */
-	public function __construct($items, $customer) {
+	private function __construct($items, $customer) {
 		$this->_items = $items;
 		$this->_customer = $customer;
 	}
@@ -84,6 +84,19 @@ class Order {
 		}
 
 		return number_format($sum, 2);
+	}
+
+	public static function create($items, $customer) {
+		return new self($items, new Customer($customer));
+	}
+
+	public static function createFromObject($order, $customer) {
+		$items = array();
+		foreach ($order->items as $item) {
+			$items[] = new Item($item['type'], $item['price']);
+		}
+
+		return new self($items, $customer);
 	}
 
 }

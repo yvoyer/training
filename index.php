@@ -1,7 +1,7 @@
 <?php
 
 use Star\Training\Customer;
-use Star\Training\OrderFactory;
+use Star\Training\Order;
 
 /**
  * @param object $order
@@ -10,7 +10,7 @@ use Star\Training\OrderFactory;
  * @return string The total price to pay for the $customer
  */
 function calculateOrder($order, $customer = null) {
-	$order = OrderFactory::createFromObjectOrder($order, new Customer($customer));
+	$order = Order::createFromObject($order, new Customer($customer));
 	return $order->calculate();
 }
 
