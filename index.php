@@ -12,7 +12,7 @@ interface AccountType {
 
 class NormalAccount implements AccountType {
 	public function discount($price) {
-		// TODO: Implement discount() method.
+		return $price;
 	}
 };
 class BronzeAccount implements AccountType {
@@ -86,20 +86,12 @@ function calculateOrder($order, $customer = null) {
 
         $itemQuantity[$item['type']] ++;
 
-        if ($customer->type() instanceof BronzeAccount) {
-            $price *= .90;
-        }
-
         if (2 === $item['type']) {
             $price *= 1.5;
         }
 
         if (3 === $item['type']) {
             $price *= 2;
-        }
-
-        if ($customer->type() instanceof SilverAccount) {
-            $price *= .80;
         }
 
         if ($customer->type() instanceof GoldAccount) {
@@ -111,16 +103,14 @@ function calculateOrder($order, $customer = null) {
                     $price = 0;
                 }
             }
+			
         }
-
 
         $sum += $price;
     }
 
-    if ($customer->type() instanceof GoldAccount) {
-        $sum *= .70;
-    }
-
+	$sum = $customer->type()->discount($sum);
+	
     return number_format($sum, 2);
 }
 
