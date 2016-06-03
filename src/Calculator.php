@@ -25,6 +25,7 @@ class Calculator {
 		$highestPrice[self::ITEM_TYPE_3] = 0;
 
 		foreach ($order->items as $item) {
+			$item_obj = Item::fromArray($item);
 			$price = $item['price'];
 			$type = $item['type'];
 			if ($price > $highestPrice[$type]) {
