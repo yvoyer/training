@@ -2,6 +2,11 @@
 // ... other code
 
 interface AccountType {
+	const NORMAL = 0;
+	const BRONZE = 1;
+	const SILVER = 2;
+	const GOLD = 3;
+	
 	public function discount($price);
 }
 
@@ -12,17 +17,17 @@ class NormalAccount implements AccountType {
 };
 class BronzeAccount implements AccountType {
 	public function discount($price) {
-		// TODO: Implement discount() method.
+		return $price * .90;
 	}
 }
 class SilverAccount implements AccountType {
 	public function discount($price) {
-		// TODO: Implement discount() method.
+		return $price * .8;
 	}
 };
 class GoldAccount implements  AccountType {
 	public function discount($price) {
-		// TODO: Implement discount() method.
+		return $price * .7;
 	}
 };
 
@@ -33,10 +38,16 @@ class Customer {
 		$this->_account_type = $account_type;	
 	}
 	
-	public static function fromArray($customer) {
-		$accountType = (isset($customer['account_level'])) ? $customer['account_level'] : 'Normal';
+	public function type() {
+		return $this->_account_type;
+	}
+	
+	public static function fromArray($customer = null) {
+		if (null === $customer || !isset($customer['account_level'])) {
+			return new self(new NormalAccount());
+		}
 		
-		switch ($accountType) {
+		switch ($customer['account_level']) {
 			case 1:
 				return new self(new BronzeAccount());
 			case 2:
@@ -57,8 +68,9 @@ class Customer {
  */
 function calculateOrder($order, $customer = null) {
     $sum = 0;
-    $accountType = (isset($customer['account_level'])) ? $customer['account_level'] : 'Normal';
-
+	
+	$customer = Customer::fromArray($customer);
+	
     $itemQuantity[1] = 0;
     $itemQuantity[2] = 0;
     $itemQuantity[3] = 0;
@@ -74,7 +86,7 @@ function calculateOrder($order, $customer = null) {
 
         $itemQuantity[$item['type']] ++;
 
-        if (1 === $accountType) {
+        if ($customer->type() instanceof BronzeAccount) {
             $price *= .90;
         }
 
@@ -86,11 +98,11 @@ function calculateOrder($order, $customer = null) {
             $price *= 2;
         }
 
-        if (2 === $accountType) {
+        if ($customer->type() instanceof SilverAccount) {
             $price *= .80;
         }
 
-        if (3 === $accountType) {
+        if ($customer->type() instanceof GoldAccount) {
             // 2 for one
             if (2 === $itemQuantity[$item['type']] && 3 === $item['type']) {
                 $itemQuantity[$item['type']] = 0;
@@ -101,10 +113,11 @@ function calculateOrder($order, $customer = null) {
             }
         }
 
+
         $sum += $price;
     }
 
-    if (3 === $accountType) {
+    if ($customer->type() instanceof GoldAccount) {
         $sum *= .70;
     }
 
