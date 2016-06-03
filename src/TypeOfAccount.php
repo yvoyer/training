@@ -33,6 +33,14 @@ class TypeOfAccount {
 		return $price;
 	}
 
+	public function applyDiscountOnTotal($sum) {
+		if (3 === $this->type) {
+			$sum *= .70;
+		}
+
+		return $sum;
+	}
+
 	public static function fromCustomer($customer = null) {
 		return new self((isset($customer['account_level'])) ? $customer['account_level'] : 'Normal');
 	}

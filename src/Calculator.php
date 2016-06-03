@@ -10,6 +10,8 @@ class Calculator {
 
 	const ITEM_TYPE_3 = 3;
 
+	const QUANTITY_2 = 2;
+
 	public function calculate($order, $customer = null) {
 
 		$sum = 0;
@@ -43,7 +45,7 @@ class Calculator {
 
 			if (3 === $accountType->getType()) {
 				// 2 for one
-				if (self::ITEM_TYPE_2 === $itemQuantity[$type] && self::ITEM_TYPE_3 === $type) {
+				if (self::QUANTITY_2 === $itemQuantity[$type] && self::ITEM_TYPE_3 === $type) {
 					$itemQuantity[$type] = 0;
 					$price = $highestPrice[$type] - $price;
 					if ($price < 0) {
@@ -55,9 +57,7 @@ class Calculator {
 			$sum += $price;
 		}
 
-		if (3 === $accountType->getType()) {
-			$sum *= .70;
-		}
+		$sum = $accountType->applyDiscountOnTotal($sum);
 
 		return number_format($sum, 2);
 
