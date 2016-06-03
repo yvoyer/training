@@ -77,6 +77,8 @@ class Calculator {
 
     public function calculateOrder(Order $order, Customer $customer = null) {
         $orderItems = $order->getItems();
+        $accountLevel = $customer->getAccountLevel();
+
         $sum = 0;
 
         $itemQuantity[1] = 0;
@@ -89,9 +91,8 @@ class Calculator {
         foreach ($orderItems as $item) {
             $itemPrice = $item.getPrice();
             $itemType = $item.getType();
-            $accountLevel = $customer->getAccountLevel();
 
-            if ($itemPrice > $highestPrice[$item.getType()]) {
+            if ($itemPrice > $highestPrice[$itemType]) {
                 $highestPrice[$itemType] = $itemPrice;
             }
 
