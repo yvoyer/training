@@ -4,9 +4,6 @@ namespace Star\Training;
 
 class OrderCalculator {
 
-	const ACCOUNT_TYPE_BRONZE = 1;
-	const ACCOUNT_TYPE_SILVER = 2;
-	const ACCOUNT_TYPE_GOLD = 3;
 	const ITEM_RARITY_UNCOMMON = 2;
 	const ITEM_RARITY_RARE = 3;
 	const ACCOUNT_PRICE_REBATE_BRONZE = 0.90;
@@ -15,10 +12,13 @@ class OrderCalculator {
 	const ITEM_PRICE_BOOST_UNCOMMON = 1.5;
 	const ITEM_PRICE_BOOST_RARE = 2;
 
-
-	function calculate($order, $customer = null) {
+	/**
+	 * @param $order
+	 * @param Customer $customer
+	 * @return string
+	 */
+	function calculate($order, $customer) {
 		$sum = 0;
-		$accountType = (isset($customer['account_level'])) ? $customer['account_level'] : 'Normal';
 
 		$itemQuantity[1] = 0;
 		$itemQuantity[2] = 0;
@@ -35,11 +35,11 @@ class OrderCalculator {
 
 			$itemQuantity[$item['type']] ++;
 
-			if (self::ACCOUNT_TYPE_BRONZE === $accountType) {
+			if ($customer->isAccountTypeBronze()) {
 				$price *= self::ACCOUNT_PRICE_REBATE_BRONZE;
 			}
 
-			if (self::ACCOUNT_TYPE_SILVER === $accountType) {
+			if ($customer->isAccountTypeSilver()) {
 				$price *= self::ACCOUNT_PRICE_REBATE_SILVER;
 			}
 
@@ -51,7 +51,7 @@ class OrderCalculator {
 				$price *= self::ITEM_PRICE_BOOST_RARE;
 			}
 
-			if (self::ACCOUNT_TYPE_GOLD === $accountType) {
+			if ($customer->isAccountTypeGold()) {
 				// 2 for one
 				if (self::ITEM_RARITY_UNCOMMON === $itemQuantity[$item['type']] && self::ITEM_RARITY_RARE === $item['type']) {
 					$itemQuantity[$item['type']] = 0;
@@ -65,7 +65,7 @@ class OrderCalculator {
 			$sum += $price;
 		}
 
-		if (self::ACCOUNT_TYPE_GOLD === $accountType) {
+		if ($customer->isAccountTypeGold()) {
 			$sum *= self::ACCOUNT_PRICE_REBATE_GOLD;
 		}
 

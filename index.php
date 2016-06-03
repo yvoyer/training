@@ -1,5 +1,6 @@
 <?php
 
+use Star\Training\Customer;
 use Star\Training\OrderCalculator;
 
 /**
@@ -10,7 +11,7 @@ use Star\Training\OrderCalculator;
  */
 function calculateOrder($order, $customer = null) {
 	$order_calculator = new OrderCalculator();
-	return $order_calculator->calculate($order, $customer);
+	return $order_calculator->calculate($order, new Customer($customer));
 }
 
 // ... other code
