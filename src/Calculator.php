@@ -13,7 +13,7 @@ class Calculator {
 	public function calculate($order, $customer = null) {
 
 		$sum = 0;
-		$accountType = (isset($customer['account_level'])) ? $customer['account_level'] : 'Normal';
+		$accountType = TypeOfAccount::fromCustomer($customer);
 
 		$itemQuantity[self::ITEM_TYPE_1] = 0;
 		$itemQuantity[self::ITEM_TYPE_2] = 0;
@@ -31,7 +31,7 @@ class Calculator {
 
 			$itemQuantity[$type]++;
 
-			if (1 === $accountType) {
+			if (1 === $accountType->getType()) {
 				$price *= .90;
 			}
 
@@ -43,11 +43,11 @@ class Calculator {
 				$price *= 2;
 			}
 
-			if (2 === $accountType) {
+			if (2 === $accountType->getType()) {
 				$price *= .80;
 			}
 
-			if (3 === $accountType) {
+			if (3 === $accountType->getType()) {
 				// 2 for one
 				if (self::ITEM_TYPE_2 === $itemQuantity[$type] && self::ITEM_TYPE_3 === $type) {
 					$itemQuantity[$type] = 0;
@@ -61,7 +61,7 @@ class Calculator {
 			$sum += $price;
 		}
 
-		if (3 === $accountType) {
+		if (3 === $accountType->getType()) {
 			$sum *= .70;
 		}
 
